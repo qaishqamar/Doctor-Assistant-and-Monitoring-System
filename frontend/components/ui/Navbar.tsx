@@ -39,10 +39,10 @@ const Navbar = () => {
 
   const navItems = [
     { name: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
-    { name: 'Patients', icon: Users, href: '/dashboard/patients' },
-    { name: 'Reports', icon: FileText, href: '/dashboard/reports' },
-    { name: 'Messages', icon: MessageSquare, href: '/dashboard/messages' },
-    { name: 'Settings', icon: Settings, href: '/dashboard/settings' },
+    { name: 'Patients', icon: Users, href: '/patients' },
+    { name: 'Reports', icon: FileText, href: '/reports' },
+    { name: 'Messages', icon: MessageSquare, href: '/messages' },
+    { name: 'Settings', icon: Settings, href: '/settings' },
   ];
 
   return (
