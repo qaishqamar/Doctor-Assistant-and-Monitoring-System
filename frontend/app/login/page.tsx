@@ -1,143 +1,157 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Activity } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError('');
-    
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Dummy authentication - accept any email/password combination
-    if (email && password) {
-      // Store user session in localStorage
-      localStorage.setItem('user', JSON.stringify({
-        email,
-        name: email.split('@')[0],
-        isAuthenticated: true
-      }));
-      
-      // Redirect to dashboard
-      router.push('/dashboard');
-    } else {
+    if (!email || !password) {
       setError('Please enter both email and password');
+      return;
     }
+    // Store user session in localStorage
+    const userData = {
+      email,
+      name: email.split('@')[0],
+      isAuthenticated: true,
+      loginTime: new Date().toISOString()
+    };
+    localStorage.setItem('user', JSON.stringify(userData));
     
-    setIsLoading(false);
+    // Redirect to dashboard
+    router.push('/dashboard');
+  };
+
+  const handleAzureLogin = () => {
+    // Store user session in localStorage
+    const userData = {
+      email: 'dr.johnson@clinic.com',
+      name: 'Sarah Johnson',
+      isAuthenticated: true,
+      loginTime: new Date().toISOString()
+    };
+    localStorage.setItem('user', JSON.stringify(userData));
+    
+    // Redirect to dashboard
+    router.push('/dashboard');
   };
 
   return (
-    <div className="flex min-h-screen flex-col md:flex-row">
-      {/* Left Side: Branding */}
-      <div className="flex w-full flex-col justify-center bg-blue-600 p-12 text-white md:w-1/2">
-        <div className="mx-auto max-w-md text-center">
-          <div className="mb-8 flex justify-center">
-            {/* Heartbeat Icon Placeholder */}
-            <svg className="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex">
+      {/* Left side - Branding */}
+      <div className="hidden lg:flex lg:w-1/2 bg-blue-600 items-center justify-center p-8 lg:p-12">
+        <div className="text-center text-white">
+          <Activity className="w-20 h-20 lg:w-24 lg:h-24 mx-auto mb-6" />
+          <h1 className="text-3xl lg:text-4xl mb-4">Clinical Care Platform</h1>
+          <p className="text-lg lg:text-xl text-blue-100 mb-8">
+            AI-Based Symptom Analysis & Patient Monitoring System
+          </p>
+          <div className="space-y-4 text-left max-w-md">
+            <div className="flex items-start space-x-3">
+              <div className="w-2 h-2 bg-blue-300 rounded-full mt-2"></div>
+              <p className="text-blue-50">Real-time patient monitoring and alerts</p>
+            </div>
+            <div className="flex items-start space-x-3">
+              <div className="w-2 h-2 bg-blue-300 rounded-full mt-2"></div>
+              <p className="text-blue-50">AI-powered symptom analysis reports</p>
+            </div>
+            <div className="flex items-start space-x-3">
+              <div className="w-2 h-2 bg-blue-300 rounded-full mt-2"></div>
+              <p className="text-blue-50">Comprehensive medication adherence tracking</p>
+            </div>
           </div>
-          <h1 className="mb-4 text-4xl font-bold">Clinical Care Platform</h1>
-          <p className="mb-8 text-lg opacity-90">AI-Based Symptom Analysis & Patient Monitoring System</p>
-          
-          <ul className="space-y-4 text-left">
-            <li className="flex items-center space-x-3">
-              <span className="h-2 w-2 rounded-full bg-blue-300"></span>
-              <span>Real-time patient monitoring and alerts</span>
-            </li>
-            <li className="flex items-center space-x-3">
-              <span className="h-2 w-2 rounded-full bg-blue-300"></span>
-              <span>AI-powered symptom analysis reports</span>
-            </li>
-            <li className="flex items-center space-x-3">
-              <span className="h-2 w-2 rounded-full bg-blue-300"></span>
-              <span>Comprehensive medication adherence tracking</span>
-            </li>
-          </ul>
         </div>
       </div>
 
-      {/* Right Side: Login Form */}
-      <div className="flex w-full items-center justify-center bg-blue-50 p-12 md:w-1/2">
-        <div className="w-full max-w-md rounded-2xl bg-white p-10 shadow-xl">
-          <div className="mb-8 text-center">
-            <h2 className="text-2xl font-semibold text-gray-800">Welcome Back</h2>
-            <p className="text-gray-500">Sign in to access your dashboard</p>
+      {/* Right side - Login form */}
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-8">
+        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 w-full max-w-md">
+          <div className="mb-6 sm:mb-8">
+            <div className="flex items-center justify-center mb-4 lg:hidden">
+              <Activity className="w-10 h-10 sm:w-12 sm:h-12 text-blue-600" />
+            </div>
+            <h2 className="text-xl sm:text-2xl text-center text-gray-900 mb-2">Welcome Back</h2>
+            <p className="text-center text-gray-600">Sign in to access your dashboard</p>
           </div>
 
-          <button className="flex w-full items-center justify-center space-x-2 rounded-lg bg-blue-600 py-3 font-medium text-white transition hover:bg-blue-700">
+          <button
+            onClick={handleAzureLogin}
+            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors mb-6 flex items-center justify-center space-x-2"
+          >
+            <svg className="w-5 h-5" viewBox="0 0 23 23" fill="currentColor">
+              <path d="M0 0h10.931v10.931H0V0zm12.069 0H23v10.931H12.069V0zM0 12.069h10.931V23H0V12.069zm12.069 0H23V23H12.069V12.069z"/>
+            </svg>
             <span>Sign in with Azure AD</span>
           </button>
 
-          <div className="my-6 flex items-center">
-            <div className="grow border-t border-gray-200"></div>
-            <span className="mx-4 text-sm text-gray-400">Or continue with email</span>
-            <div className="grow border-t border-gray-200"></div>
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-white text-gray-500">Or continue with email</span>
+            </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="mb-1 block text-sm text-gray-600">Email Address</label>
-              <input 
-                type="email" 
-                placeholder="doctor@clinic.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none placeholder-gray-500 text-gray-900"
-                required
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-sm text-gray-600">Password</label>
-              <input 
-                type="password" 
-                placeholder="Enter any password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none placeholder-gray-500 text-gray-900"
-                required
-              />
-            </div>
-
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center space-x-2 text-gray-">
-                <input type="checkbox" className="rounded border-gray-300" />
-                <span>Remember me</span>
-              </label>
-              <a href="#" className="text-blue-600 hover:underline">Forgot password?</a>
-            </div>
-
+          <form onSubmit={handleLogin} className="space-y-4">
             {error && (
-              <div className="text-red-500 text-sm text-center py-2">
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
                 {error}
               </div>
             )}
-            <button 
-              type="submit" 
-              disabled={isLoading}
-              className="w-full rounded-lg bg-slate-900 py-3 font-semibold text-white transition hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+
+            <div>
+              <label className="block text-gray-700 mb-2 font-medium">Email Address</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500"
+                placeholder="doctor@clinic.com"
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700 mb-2 font-medium">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500"
+                placeholder="••••••••"
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <label className="flex items-center">
+                <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                <span className="ml-2 text-gray-700">Remember me</span>
+              </label>
+              <a href="#" className="text-blue-600 hover:text-blue-700">
+                Forgot password?
+              </a>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-gray-900 text-white py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium"
             >
-              {isLoading ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Signing in...
-                </>
-              ) : 'Sign In'}
+              Sign In
             </button>
           </form>
+
+          <div className="mt-6 sm:mt-8 pt-6 border-t border-gray-200 text-center text-sm text-gray-600">
+            <a href="#" className="hover:text-blue-600">Privacy Policy</a>
+            <span className="mx-2">•</span>
+            <a href="#" className="hover:text-blue-600">Terms of Service</a>
+          </div>
         </div>
       </div>
     </div>

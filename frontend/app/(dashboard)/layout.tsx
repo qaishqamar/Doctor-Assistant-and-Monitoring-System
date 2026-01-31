@@ -1,15 +1,15 @@
 'use client';
 
 import React from 'react';
-import DashboardLayoutComponent from '../../components/layouts/DashboardLayout';
+import { DashboardLayout } from '../../components/layouts/DashboardLayout';
 import AuthWrapper from '../../components/AuthWrapper';
 
 const DashboardGroupLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <AuthWrapper>
-      <DashboardLayoutComponent>
+      <DashboardLayout>
         {children}
-      </DashboardLayoutComponent>
+      </DashboardLayout>
     </AuthWrapper>
   );
 };
